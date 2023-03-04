@@ -1,42 +1,58 @@
 {
-  "name": "commandsocket",
-  "displayName": "CommandSocket",
-  "description": "Allows to control VSCode via a WebSocket.",
-  "version": "0.0.1",
-  "engines": {
-    "vscode": "^1.76.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [],
-  "main": "./out/extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "commandsocket.helloWorld",
-        "title": "Hello World"
-      }
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "yarn run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "yarn run compile && yarn run lint",
-    "lint": "eslint src --ext ts"
-  },
-  "devDependencies": {
-    "@types/vscode": "^1.76.0",
-    "@types/glob": "^8.1.0",
-    "@types/mocha": "^10.0.1",
-    "@types/node": "16.x",
-    "@typescript-eslint/eslint-plugin": "^5.53.0",
-    "@typescript-eslint/parser": "^5.53.0",
-    "eslint": "^8.34.0",
-    "glob": "^8.1.0",
-    "mocha": "^10.2.0",
-    "typescript": "^4.9.5",
-    "@vscode/test-electron": "^2.2.3"
-  }
+    "name": "commandsocket",
+    "displayName": "CommandSocket",
+    "description": "Allows to control VSCode via a WebSocket.",
+    "version": "1.0.0",
+    "engines": {
+        "vscode": "^1.76.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "*"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "configuration": {
+            "title": "CommandSocket",
+            "properties": {
+                "commandsocket.port": {
+                    "type": "number",
+                    "default": 6783,
+                    "description": "Port to use for WebSocket Server."
+                },
+                "commandsocket.password": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Password to encrypt communication. Leave blank to disable encryption."
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "yarn run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "yarn run compile && yarn run lint",
+        "lint": "eslint src --ext ts"
+    },
+    "devDependencies": {
+        "@types/glob": "^8.1.0",
+        "@types/mocha": "^10.0.1",
+        "@types/node": "16.x",
+        "@types/vscode": "^1.76.0",
+        "@types/ws": "^8.5.4",
+        "@typescript-eslint/eslint-plugin": "^5.53.0",
+        "@typescript-eslint/parser": "^5.53.0",
+        "@vscode/test-electron": "^2.2.3",
+        "@vscode/vsce": "^2.18.0",
+        "eslint": "^8.34.0",
+        "glob": "^8.1.0",
+        "mocha": "^10.2.0",
+        "typescript": "^4.9.5"
+    },
+    "dependencies": {
+        "ws": "^8.12.1"
+    }
 }

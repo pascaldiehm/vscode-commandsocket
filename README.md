@@ -1,71 +1,39 @@
-# commandsocket README
+# CommandSocket
 
-This is the README for your extension "commandsocket". After writing up a brief description, we recommend including the following sections.
+This extension allows you to trigger VSCode commands programmatically (through scripts or shortcuts) using websockets.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+Every message sent to this extension has to be in JSON format and, if set, encrypted with a password (See [Encryption Details](#encryption-details)).
+Every request has to have two keys: `reqID` and `action`.
+`reqID` can be _anything_ and will be echoed back as `resID` in the response.
+Action hast to be a valid action, otherwise the request is ignored.
 
-For example if there is an image subfolder under your extension project workspace:
+| action          | Function                | Request parameters                                                                                       | Response parameters                                                    |
+| --------------- | ----------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `alert`         | Display notification    | `message: string`<br/>`level: info\|warn\|error`<br/>`options: string[]`                                 | `selected?: string`                                                    |
+| `status`        | Display status bar text | `message: string`<br/>`timeout: number` (ms)                                                             |                                                                        |
+| `list-commands` | Fetch list of commands  | `all: boolean`<br/>                                                                                      | `list: string[]`                                                       |
+| `run-command`   | Run command             | `command: string`<br/>`arguments: any[]` ([more](https://code.visualstudio.com/api/references/commands)) | `good: boolean`<br/>`response: any`                                    |
+| `input`         | Get user input          | `title: string`<br/>`placeholder: string`<br/>`value: string`                                            | `value?: string`                                                       |
+| `pick`          | Get user selection      | `title: string`<br/>`placeholder: string`<br/>`items: string[]`<br/>`multi: boolean`                     | `selected: string` (if `!multi`)<br/>`selected: string[]` (if `multi`) |
+| `get-editor`    | Get editor information  |                                                                                                          | `editor: vscode.TextEditor`                                            |
+| `get-version`   | Get VSCode version      |                                                                                                          | `version: string`                                                      |
 
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+All request parameters are optional and have a default value.
+Response parameters marked with a question mark are not included at all, if they don't have a value.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+This extension has two configuration options:
 
-For example:
+-   `commandsocket.port`: The port to use for the WebSocket server.
+-   `commandsocket.password`: A password to encrypt transactions. Leave this blank to keep the communication unencrypted.
 
-This extension contributes the following settings:
+## Encryption details
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+If a password is [set](#extension-settings), the incoming data is decrypted and the outgoing data is encrypted using that password.
+Encryption is handled using the node `crypto` module using `aes-256-gcm`.
+The key is generated from the password using a key length of 32 and the salt `commandsocket-salt`.
+The encrypted message (in hex format) is then joined with the IV (in hex format) using a pipe symbol (`encrypted-message|IV`).
+For more details find the functions `serializeMessage` and `parseMessage` in the extensions source code.
