@@ -60,5 +60,6 @@
         "url": "https://github.com/pascaldiehm/vscode-commandsocket"
     },
     "icon": "icon.png",
-    "license": "MIT"
+    "license": "MIT",
+    "publisher": "pascaldiehm"
 }
