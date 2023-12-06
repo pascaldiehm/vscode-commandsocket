@@ -69,6 +69,119 @@ function serializeMessage(message: any) {
     return data;
 }
 
+// Define a function to retrieve status values based on the provided name
+function getStatusValue(name: string): any {
+    interface StatusTable {
+        [name: string]: () => any;
+    }
+
+    const statusTable: StatusTable = {
+        // Debug
+        "status_debug_active_session": () =>
+            typeof (vscode.debug.activeDebugSession) !== 'undefined',
+        // Editor
+        "status_editor_column_number": () => {
+            const editor = vscode.window.activeTextEditor;
+            if (editor && editor.selection && editor.selection.active) {
+                return editor.selection.active.character + 1;
+            }
+            return 0;
+        },
+        "status_editor_document_name": () => {
+            const activeEditor = vscode.window.activeTextEditor;
+            if (activeEditor) {
+                const documentUri = activeEditor.document.uri.toString();
+                const documentUriParts = documentUri.split('/');
+                const documentName = documentUriParts[documentUriParts.length - 1];
+                return documentName || '#no-document-name';
+            }
+            return '#no-document-name';
+        },
+        "status_editor_encoding": () => {
+            const activeEditor = vscode.window.activeTextEditor;
+            if (activeEditor) {
+                const documentUri = activeEditor.document.uri;
+                const encoding = vscode.workspace.getConfiguration('files',
+                    documentUri).get<string>('encoding');
+                return encoding || '#no-editor-encoding';
+            }
+            return '#no-editor-encoding';
+        },
+        "status_editor_error_count": () => {
+            const activeEditor = vscode.window.activeTextEditor;
+            if (activeEditor) {
+                const documentUri = activeEditor?.document.uri;
+                const languageId = activeEditor?.document.languageId;
+                const diagnostics = vscode.languages.getDiagnostics(documentUri);
+
+                // Filter diagnostics to exclude non Errors
+                const filteredDiagnostics = diagnostics.filter(diagnostic => {
+                    return diagnostic.severity === vscode.DiagnosticSeverity.Error;
+                });
+
+                return filteredDiagnostics.length;
+            }
+            return 0;
+        },
+        "status_editor_language_id": () => {
+            vscode.window.activeTextEditor?.document.languageId ?? '#no-language-id'
+        },
+        "status_editor_line_number": () => {
+            const editor = vscode.window.activeTextEditor;
+            if (editor && editor.selection && editor.selection.active) {
+                return editor.selection.active.line + 1;
+            }
+            return 0;
+        },
+        // Git extension
+        "status_git_branch": () => {
+            const gitExtension = vscode.extensions.getExtension("vscode.git");
+            if (!gitExtension) {
+                return '#no-git-extension';
+            }
+
+            const gitAPI = gitExtension.exports.getAPI(1);
+            if (!gitAPI) {
+                return '#no-git-api';
+            }
+
+            const repositories = gitAPI.repositories;
+
+            if (!repositories || repositories.length === 0) {
+                return '#no-git-repositories';
+            }
+
+            const branchName = repositories[0].state.HEAD?.name;
+            return branchName || '';
+        },
+        // Workspace
+        "status_workspace_name": () => {
+            const activeEditor = vscode.window.activeTextEditor;
+            if (activeEditor) {
+                const workspaceFolder = vscode.workspace.getWorkspaceFolder(
+                    activeEditor.document.uri);
+                if (workspaceFolder) {
+                    return workspaceFolder.name;
+                }
+            }
+            return '#no-workspace';
+        },
+    };
+
+    // Check if the provided name is in the table
+    if (statusTable.hasOwnProperty(name)) {
+        const statusFunctionOrProperty = statusTable[name];
+        if (typeof statusFunctionOrProperty === "function") {
+            // If it's a function, call it and return the result
+            return statusFunctionOrProperty();
+        }
+    }
+    // If the provided name is not in the table or the value is not available,
+    // return the string '#undefined'
+    return '#undefined';
+}
+
+
 function startServer() {
     // Close previous instance of server
     server?.close();
@@ -147,6 +260,15 @@ function startServer() {
             } else if (message.action == "get-version") {
                 // Return version
                 res({ version: vscode.version });
+            } else if (message.action == "get-status") {
+                // Get the name parameter from the message
+                const name = message.name;
+
+                // Get the status value based on the provided name
+                const statusValue = getStatusValue(name);
+
+                // Respond with the name and status value
+                res({ name, value: statusValue });
             }
         });
     });

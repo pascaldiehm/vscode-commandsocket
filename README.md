@@ -19,6 +19,8 @@ Action hast to be a valid action, otherwise the request is ignored.
 | `pick`          | Get user selection      | `title: string`<br/>`placeholder: string`<br/>`items: string[]`<br/>`multi: boolean`                     | `selected: string` (if `!multi`)<br/>`selected: string[]` (if `multi`) |
 | `get-editor`    | Get editor information  |                                                                                                          | `editor: vscode.TextEditor`                                            |
 | `get-version`   | Get VSCode version      |                                                                                                          | `version: string`                                                      |
+| `get-status`    | Get status information  | `name: string`<br/>(Possible values: `status_debug_active_session`, `status_editor_column_number`, `status_editor_document_name`, `status_editor_encoding`, `status_editor_error_count`, `status_editor_language_id`, `status_editor_line_number`, `status_git_branch`, `status_workspace_name`) | `name: string`<br/>`value: any` (based on the requested status)          |
+
 
 All request parameters are optional and have a default value.
 Response parameters marked with a question mark are not included at all, if they don't have a value.
@@ -37,3 +39,7 @@ Encryption is handled using the node `crypto` module using `aes-256-gcm`.
 The key is generated from the password using a key length of 32 and the salt `commandsocket-salt`.
 The encrypted message (in hex format) is then joined with the IV (in hex format) using a pipe symbol (`encrypted-message|IV`).
 For more details find the functions `serializeMessage` and `parseMessage` in the extensions source code.
+
+## Use with Bitfocus Companion
+
+This extension is designed to work seamlessly with the module [`companion-module-microsoft-vscode`](https://github.com/bitfocus/companion-module-microsoft-vscode), allowing you to control and interact with Visual Studio Code via Elgato Streamdeck and other controllers. You can use the provided actions to display notifications, run commands, retrieve editor information, and more, enhancing your VS Code workflow.
