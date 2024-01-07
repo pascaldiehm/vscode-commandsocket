@@ -19,18 +19,19 @@ Action hast to be a valid action, otherwise the request is ignored.
 | `pick`          | Get user selection      | `title: string`<br/>`placeholder: string`<br/>`items: string[]`<br/>`multi: boolean`                     | `selected: string` (if `!multi`)<br/>`selected: string[]` (if `multi`) |
 | `get-editor`    | Get editor information  |                                                                                                          | `editor: vscode.TextEditor`                                            |
 | `get-version`   | Get VSCode version      |                                                                                                          | `version: string`                                                      |
-| `get-status`    | Get status information  | `name: string`<br/>(Possible values: `status_debug_active_session`, `status_editor_column_number`, `status_editor_document_name`, `status_editor_encoding`, `status_editor_error_count`, `status_editor_language_id`, `status_editor_line_number`, `status_git_branch`, `status_workspace_name`) | `name: string`<br/>`value: any` (based on the requested status)          |
-
+| `get-status`    | Get status information  | `name: string`[^1]                                                                                       | `name: string`<br/>`value: any` (based on the requested status)        |
 
 All request parameters are optional and have a default value.
 Response parameters marked with a question mark are not included at all, if they don't have a value.
+
+[^1]: Possible names are: `status_debug_active_session`, `status_editor_column_number`, `status_editor_line_number`, `status_editor_document_name`, `status_editor_encoding`, `status_editor_error_count`, `status_editor_language_id`, `status_git_branch`, `status_workspace_name`
 
 ## Extension Settings
 
 This extension has two configuration options:
 
--   `commandsocket.port`: The port to use for the WebSocket server.
--   `commandsocket.password`: A password to encrypt transactions. Leave this blank to keep the communication unencrypted.
+- `commandsocket.port`: The port to use for the WebSocket server.
+- `commandsocket.password`: A password to encrypt transactions. Leave this blank to keep the communication unencrypted.
 
 ## Encryption details
 
