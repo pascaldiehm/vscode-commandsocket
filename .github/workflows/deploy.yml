@@ -1,0 +1,27 @@
+name: Deploy
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+
+      - name: Install VSCE
+        run: yarn global add vsce
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Package
+        run: echo "y" | vsce package
+
+      - name: Publish
+        run: echo "y\n${{ secrets.VSCE_TOKEN }}" | vsce publish
