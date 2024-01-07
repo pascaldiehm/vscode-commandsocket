@@ -24,4 +24,4 @@ jobs:
         run: echo "y" | vsce package
 
       - name: Publish
-        run: echo "y\n${{ secrets.VSCE_TOKEN }}" | vsce publish
+        run: echo "y" | vsce publish -p ${{ secrets.VSCE_TOKEN }}
