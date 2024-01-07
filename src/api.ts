@@ -88,6 +88,7 @@ export function getVersion(res: (version: string) => void) {
   res(vscode.version);
 }
 
-export function getStatus(name: StatusName, res: (value: any) => void) {
-  res(statusFetchers[name]());
+export function getStatus(name: StatusName | null, res: (value: any) => void) {
+  if (name) res(statusFetchers[name]());
+  else res(Object.fromEntries(Object.entries(statusFetchers).map(([k, v]) => [k, v()])));
 }
