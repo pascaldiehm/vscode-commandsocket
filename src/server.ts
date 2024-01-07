@@ -78,6 +78,6 @@ function handleRequest(con: WebSocket, request: Request) {
     getVersion((version: string) => res({ version }));
   } else if (request.action == "get-status") {
     const { name } = request;
-    getStatus(name, (value: any) => res({ name, value }));
+    getStatus(name ?? null, (value: any) => res({ name, value }));
   }
 }

@@ -13,5 +13,5 @@ export type Request = {
   | { action: "pick"; title?: string; placeholder?: string; items?: string[]; multi?: boolean }
   | { action: "get-editor" }
   | { action: "get-version" }
-  | { action: "get-status"; name: StatusName }
+  | { action: "get-status"; name?: StatusName }
 );
