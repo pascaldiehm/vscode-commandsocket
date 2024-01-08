@@ -43,19 +43,14 @@
     "lint": "eslint src --ext ts"
   },
   "devDependencies": {
-    "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.1",
-    "@types/node": "16.x",
+    "@types/node": "20.10.7",
     "@types/vscode": "^1.76.0",
     "@types/ws": "^8.5.4",
-    "@typescript-eslint/eslint-plugin": "^5.53.0",
-    "@typescript-eslint/parser": "^5.53.0",
-    "@vscode/test-electron": "^2.2.3",
-    "@vscode/vsce": "^2.18.0",
-    "eslint": "^8.34.0",
-    "glob": "^8.1.0",
-    "mocha": "^10.2.0",
-    "typescript": "^4.9.5"
+    "@typescript-eslint/eslint-plugin": "^6.18.0",
+    "@typescript-eslint/parser": "^6.18.0",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3"
   },
   "dependencies": {
     "ws": "^8.12.1"
