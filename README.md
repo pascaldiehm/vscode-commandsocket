@@ -31,6 +31,7 @@ Undefined response parameters may not be included in the response.
 
 - `commandsocket.port`: The port to use for the WebSocket server.
 - `commandsocket.password`: A password to encrypt transactions. Leave this blank to keep the communication unencrypted.
+- `commandsocket.host`: The host to bind the WebSocket server to.
 
 ## Encryption details
 
