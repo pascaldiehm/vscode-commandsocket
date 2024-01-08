@@ -1,3 +1,7 @@
+### v1.1.1
+
+- Added setting to limit hosting to an address
+
 ### v1.1.0
 
 - Changed encryption algorithm for better performance
