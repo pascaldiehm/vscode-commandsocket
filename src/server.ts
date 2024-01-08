@@ -12,7 +12,10 @@ export function startServer() {
   if (server) server.close();
 
   // Start new server
-  server = new WebSocketServer({ port: getConfig<number>("port") ?? 6783 });
+  server = new WebSocketServer({
+    port: getConfig<number>("port") ?? 6783,
+    host: getConfig<string>("host") ?? "0.0.0.0",
+  });
 
   // Listen for connections
   server.on("connection", con => {
