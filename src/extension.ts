@@ -19,7 +19,7 @@ export function activate() {
   // Listen for configuration changes
   vscode.workspace.onDidChangeConfiguration(event => {
     // Restart server if port changed
-    if (event.affectsConfiguration("commandsocket.port")) startServer();
+    if (event.affectsConfiguration("commandsocket")) startServer();
   });
 }
 

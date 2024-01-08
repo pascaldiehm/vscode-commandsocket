@@ -2,7 +2,7 @@
   "name": "commandsocket",
   "displayName": "CommandSocket",
   "description": "Allows to control VSCode via a WebSocket.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "engines": {
     "vscode": "^1.76.0"
   },
@@ -26,6 +26,11 @@
           "type": "string",
           "default": "",
           "description": "Password to encrypt communication. Leave blank to disable encryption."
+        },
+        "commandsocket.host": {
+          "type": "string",
+          "default": "0.0.0.0",
+          "description": "Host to bind WebSocket Server to."
         },
         "commandsocket.newCryptoWarning": {
           "type": "boolean",
