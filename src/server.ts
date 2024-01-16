@@ -57,29 +57,29 @@ function serializeResponse(resID: any, data: Object): string {
 function handleRequest(con: WebSocket, request: Request) {
   const res = (data: Object) => con.send(serializeResponse(request.reqID, data));
 
-  if (request.action == "alert") {
+  if (request.action === "alert") {
     const { message, level, options } = request;
     alert(message ?? "", level ?? "info", options ?? [], (selected?: string) => res({ selected }));
-  } else if (request.action == "status") {
+  } else if (request.action === "status") {
     const { message, timeout } = request;
     status(message ?? "", timeout ?? 5000, () => res({}));
-  } else if (request.action == "list-commands") {
+  } else if (request.action === "list-commands") {
     const { all } = request;
     listCommands(all ?? false, (list: string[]) => res({ list }));
-  } else if (request.action == "run-command") {
+  } else if (request.action === "run-command") {
     const { command, args } = request;
     runCommand(command ?? "noop", args ?? [], () => res({}));
-  } else if (request.action == "input") {
+  } else if (request.action === "input") {
     const { title, placeholder, value } = request;
     input(title ?? "", placeholder ?? "", value ?? "", (value?: string) => res({ value }));
-  } else if (request.action == "pick") {
+  } else if (request.action === "pick") {
     const { title, placeholder, items, multi } = request;
     pick(title ?? "", placeholder ?? "", items ?? [], multi ?? false, (selected?: string) => res({ selected }));
-  } else if (request.action == "get-editor") {
+  } else if (request.action === "get-editor") {
     getEditor((editor?: vscode.TextEditor) => res({ editor }));
-  } else if (request.action == "get-version") {
+  } else if (request.action === "get-version") {
     getVersion((version: string) => res({ version }));
-  } else if (request.action == "get-status") {
+  } else if (request.action === "get-status") {
     const { name } = request;
     getStatus(name ?? null, (value: any) => res({ name, value }));
   }
