@@ -18,7 +18,7 @@ const statusFetchers = {
   status_editor_error_count: () => {
     const uri = vscode.window.activeTextEditor?.document.uri;
     if (!uri) return 0;
-    return vscode.languages.getDiagnostics(uri).filter(d => d.severity == vscode.DiagnosticSeverity.Error).length;
+    return vscode.languages.getDiagnostics(uri).filter(d => d.severity === vscode.DiagnosticSeverity.Error).length;
   },
   status_editor_language_id: () => vscode.window.activeTextEditor?.document.languageId ?? "#no-language-id",
 
