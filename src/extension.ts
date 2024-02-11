@@ -1,8 +1,36 @@
 import * as vscode from "vscode";
-import { startServer, stopServer } from "./server";
+import { Client } from "./client";
+import { getState } from "./common";
+import { State } from "./global";
+import { Server } from "./server";
+
+let manualUpdateInterval: NodeJS.Timeout | null = null;
+const prevState: { [key in State["type"]]?: string } = { commands: "", editor: "", git: "", extensions: "" };
 
 export function getConfig<T>(id: string): T | undefined {
-  return vscode.workspace.getConfiguration("commandsocket").get(id);
+  return vscode.workspace.getConfiguration("commandsocket").get<T>(id);
+}
+
+function iface(): typeof Server {
+  return getConfig<string>("role") === "server" ? Server : Client;
+}
+
+function start() {
+  iface().start();
+
+  if (manualUpdateInterval) clearInterval(manualUpdateInterval);
+  manualUpdateInterval = setInterval(async () => {
+    if (!iface().live()) return;
+
+    for (const k in prevState) {
+      const key = k as keyof typeof prevState;
+      const state = JSON.stringify(await getState(key));
+      if (state !== prevState[key]) {
+        prevState[key] = state;
+        iface().update(key);
+      }
+    }
+  }, getConfig<number>("timeoutManualUpdate") ?? 1000);
 }
 
 export function activate() {
@@ -13,17 +41,18 @@ export function activate() {
     vscode.workspace.getConfiguration("commandsocket").update("newCryptoWarning", false, true);
   }
 
-  // Start server
-  startServer();
+  vscode.workspace.onDidChangeConfiguration(e => e.affectsConfiguration("commandsocket") && start());
+  vscode.window.onDidChangeWindowState(() => iface().update("focus"));
+  vscode.debug.onDidChangeActiveDebugSession(() => iface().update("debug"));
+  vscode.debug.onDidChangeBreakpoints(() => iface().update("debug"));
+  vscode.env.onDidChangeShell(() => iface().update("environment"));
+  vscode.workspace.onDidChangeWorkspaceFolders(() => iface().update("workspace"));
+  vscode.workspace.onDidGrantWorkspaceTrust(() => iface().update("workspace"));
 
-  // Listen for configuration changes
-  vscode.workspace.onDidChangeConfiguration(event => {
-    // Restart server if port changed
-    if (event.affectsConfiguration("commandsocket")) startServer();
-  });
+  start();
 }
 
 export function deactivate() {
-  // Stop server
-  stopServer();
+  iface().stop();
+  if (manualUpdateInterval) clearInterval(manualUpdateInterval);
 }

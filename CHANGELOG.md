@@ -1,3 +1,10 @@
+### v2.0.0
+
+- Switched to using semantic versioning
+- Commandsocket can now act as a server or a client
+- Changed default behavior of `commandsocket.host` configuration to bind to all interfaces (in server mode)
+- Redefined and extended API, vscode status updates are now pushed to the/all listener(s)
+
 ### v1.1.1
 
 - Added setting to limit hosting to an address

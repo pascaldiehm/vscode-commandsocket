@@ -2,7 +2,7 @@
   "name": "commandsocket",
   "displayName": "CommandSocket",
   "description": "Allows to control VSCode via a WebSocket.",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "engines": {
     "vscode": "^1.76.0"
   },
@@ -17,25 +17,49 @@
     "configuration": {
       "title": "CommandSocket",
       "properties": {
+        "commandsocket.role": {
+          "type": "string",
+          "enum": [
+            "server",
+            "client"
+          ],
+          "default": "server",
+          "description": "The role of the extension. If set to 'server', the extension will start a WebSocket server. If set to 'client', the extension will connect to a WebSocket server."
+        },
+        "commandsocket.host": {
+          "type": "string",
+          "default": "",
+          "description": "The host to bind the server to or the host to connect to. Leave blank to bind to all interfaces or connect to 127.0.0.1."
+        },
         "commandsocket.port": {
           "type": "number",
           "default": 6783,
-          "description": "Port to use for WebSocket Server."
+          "description": "The port to bind the server to or the port to connect to."
         },
         "commandsocket.password": {
           "type": "string",
           "default": "",
           "description": "Password to encrypt communication. Leave blank to disable encryption."
         },
-        "commandsocket.host": {
-          "type": "string",
-          "default": "0.0.0.0",
-          "description": "Host to bind WebSocket Server to."
+        "commandsocket.timeoutReconnect": {
+          "type": "number",
+          "default": 5000,
+          "description": "Time to wait before reconnecting to the server in milliseconds (client mode only)."
+        },
+        "commandsocket.timeoutManualUpdate": {
+          "type": "number",
+          "default": 1000,
+          "description": "Time to wait between manual update checks in milliseconds."
         },
         "commandsocket.newCryptoWarning": {
           "type": "boolean",
           "default": true,
           "description": "Warn about new encryption method."
+        },
+        "commandsocket.legacyInterfaceWarning": {
+          "type": "boolean",
+          "default": true,
+          "description": "Warn about legacy interface."
         }
       }
     }
