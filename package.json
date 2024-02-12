@@ -2,7 +2,7 @@
   "name": "commandsocket",
   "displayName": "CommandSocket",
   "description": "Allows to control VSCode via a WebSocket.",
-  "version": "2.0.2",
+  "version": "0.0.0",
   "engines": {
     "vscode": "^1.76.0"
   },
