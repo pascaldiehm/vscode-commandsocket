@@ -41,7 +41,14 @@ export function activate() {
     vscode.workspace.getConfiguration("commandsocket").update("newCryptoWarning", false, true);
   }
 
-  vscode.workspace.onDidChangeConfiguration(e => e.affectsConfiguration("commandsocket") && start());
+  vscode.workspace.onDidChangeConfiguration(e => {
+    if (!e.affectsConfiguration("commandsocket")) return;
+
+    Server.stop();
+    Client.stop();
+    iface().start();
+  });
+
   vscode.window.onDidChangeWindowState(() => iface().update("focus"));
   vscode.debug.onDidChangeActiveDebugSession(() => iface().update("debug"));
   vscode.debug.onDidChangeBreakpoints(() => iface().update("debug"));
