@@ -1,3 +1,7 @@
+### v2.0.1
+
+- Fixed legacy interface `get-status` document name containing `%20` instead of spaces
+
 ### v2.0.0
 
 - Switched to using semantic versioning

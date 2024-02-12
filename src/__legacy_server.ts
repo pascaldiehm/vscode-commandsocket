@@ -11,7 +11,7 @@ const statusFetchers = {
   status_editor_column_number: () => (vscode.window.activeTextEditor?.selection.active.character ?? -2) + 1,
   status_editor_line_number: () => (vscode.window.activeTextEditor?.selection.active.line ?? -2) + 1,
   status_editor_document_name: () =>
-    vscode.window.activeTextEditor?.document.uri.toString().split("/").pop() ?? "#no-document-name",
+    vscode.window.activeTextEditor?.document.fileName.split("/").pop() ?? "#no-document-name",
   status_editor_encoding: () => {
     const uri = vscode.window.activeTextEditor?.document.uri;
     if (!uri) return "#no-editor-encoding";
