@@ -1,3 +1,8 @@
+### v2.0.2
+
+- Fixed restarting interface when the configuration changes
+- Fixed a wrong default configuration value in the README
+
 ### v2.0.1
 
 - Fixed legacy interface `get-status` document name containing `%20` instead of spaces
