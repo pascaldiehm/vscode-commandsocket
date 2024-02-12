@@ -52,7 +52,7 @@ Each state update contains a `type` (see the table below). State updates are sen
 
 | Name                                   | Description                                                  | Default  |
 | -------------------------------------- | ------------------------------------------------------------ | -------- |
-| `commandsocket.role`                   | Role of the extension (`server` or `client`)                 | `client` |
+| `commandsocket.role`                   | Role of the extension (`server` or `client`)                 | `server` |
 | `commandsocket.host`                   | Bind address or remote address                               | _empty_  |
 | `commandsocket.port`                   | Bind port or remote port                                     | `6783`   |
 | `commandsocket.password`               | Password for [encryption](#encryption-details)               | _empty_  |
