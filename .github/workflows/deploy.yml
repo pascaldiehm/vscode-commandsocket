@@ -16,7 +16,7 @@ jobs:
         uses: actions/setup-node@v4
 
       - name: Install VSCE
-        run: yarn global add vsce
+        run: yarn global add @vscode/vsce
 
       - name: Install dependencies
         run: yarn install
