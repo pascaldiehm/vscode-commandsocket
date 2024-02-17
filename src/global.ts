@@ -52,36 +52,38 @@ export type State =
     };
 
 export function encrypt(data: string, password: string): string {
-  let encrypted = "";
+  // TODO: Enable this to pad outgoing data
+  // data = String.fromCharCode(Math.floor(Math.random() * 26) + 97) + data;
+
+  const encrypted = new Array<string>(data.length);
   let li = 0;
   let ri = data.length - 1;
   let si = 0;
   let sc = (password.charCodeAt(0) & 15) + 1;
   let ei = 0;
 
-  while (li <= ri) {
+  for (let i = 0; i < data.length; i++) {
     let chr = 0;
+    if (si & 1) chr = data.charCodeAt(ri--);
+    else chr = data.charCodeAt(li++);
 
+    sc--;
     if (sc === 0) {
       si = (si + 1) % password.length;
       sc = (password.charCodeAt(si) & 15) + 1;
     }
 
-    if (si & 1) chr = data.charCodeAt(ri--);
-    else chr = data.charCodeAt(li++);
-    sc--;
-
     chr ^= password.charCodeAt(ei++);
     if (ei >= password.length) ei = 0;
 
-    encrypted += String.fromCharCode(chr);
+    encrypted[i] = String.fromCharCode(chr);
   }
 
-  return encrypted;
+  return encrypted.join("");
 }
 
 export function decrypt(data: string, password: string): string {
-  let decrypted = new Array(data.length);
+  const decrypted = new Array<string>(data.length);
   let li = 0;
   let ri = data.length - 1;
   let si = 0;
@@ -94,15 +96,16 @@ export function decrypt(data: string, password: string): string {
     chr ^= password.charCodeAt(ei++);
     if (ei >= password.length) ei = 0;
 
+    if (si & 1) decrypted[ri--] = String.fromCharCode(chr);
+    else decrypted[li++] = String.fromCharCode(chr);
+
+    sc--;
     if (sc === 0) {
       si = (si + 1) % password.length;
       sc = (password.charCodeAt(si) & 15) + 1;
     }
-
-    if (si & 1) decrypted[ri--] = String.fromCharCode(chr);
-    else decrypted[li++] = String.fromCharCode(chr);
-    sc--;
   }
 
-  return decrypted.join("");
+  if (decrypted[0] === "{") return decrypted.join(""); // TODO: Remove this when all communication is padded
+  return decrypted.join("").substring(1, decrypted.length);
 }
