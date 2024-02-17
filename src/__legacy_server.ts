@@ -50,7 +50,13 @@ export async function __legacy_handle_request(data: string): Promise<object | nu
     const password = getConfig<string>("password");
     if (password) data = decrypt(data, password);
 
-    const request = JSON.parse(data);
+    let request;
+    try {
+      request = JSON.parse(data);
+    } catch {
+      return null;
+    }
+
     if (!("reqID" in request && "action" in request)) return null;
     const action = request.action;
 
