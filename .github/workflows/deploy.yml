@@ -9,8 +9,8 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@main
+      - uses: actions/setup-node@main
 
       - name: Replace version in package.json
         run: 'sed -i "s/\"version\": \"0.0.0\"/\"version\": \"${{ github.ref_name }}\"/" package.json'
@@ -22,7 +22,7 @@ jobs:
         run: yarn install
 
       - name: Package
-        run: echo "y" | vsce package
+        run: vsce package --allow-star-activation
 
       - name: Publish
-        run: echo "y" | vsce publish -p ${{ secrets.VSCE_TOKEN }}
+        run: vsce publish -p ${{ secrets.VSCE_TOKEN }} --allow-star-activation
