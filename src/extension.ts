@@ -34,13 +34,6 @@ function start() {
 }
 
 export function activate() {
-  if (getConfig<boolean>("newCryptoWarning")) {
-    vscode.window.showWarningMessage(
-      "[Command Socket] In version 1.1.0, the encryption algorithm was changed. If you are using my Bitfocus Companion plugin as well, make sure to upgrade it to the same version (or downgrade this extension to 1.0.x)."
-    );
-    vscode.workspace.getConfiguration("commandsocket").update("newCryptoWarning", false, true);
-  }
-
   vscode.workspace.onDidChangeConfiguration(e => {
     if (!e.affectsConfiguration("commandsocket")) return;
 

@@ -22,7 +22,7 @@ jobs:
         run: yarn install
 
       - name: Package
-        run: vsce package --allow-star-activation
+        run: vsce package
 
       - name: Publish
-        run: vsce publish -p ${{ secrets.VSCE_TOKEN }} --allow-star-activation
+        run: vsce publish -p ${{ secrets.VSCE_TOKEN }}

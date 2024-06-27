@@ -10,7 +10,7 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "onStartupFinished"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -23,7 +23,7 @@
             "server",
             "client"
           ],
-          "default": "server",
+          "default": "client",
           "description": "The role of the extension. If set to 'server', the extension will start a WebSocket server. If set to 'client', the extension will connect to a WebSocket server."
         },
         "commandsocket.host": {
@@ -50,16 +50,6 @@
           "type": "number",
           "default": 1000,
           "description": "Time to wait between manual update checks in milliseconds."
-        },
-        "commandsocket.newCryptoWarning": {
-          "type": "boolean",
-          "default": true,
-          "description": "Warn about new encryption method."
-        },
-        "commandsocket.legacyInterfaceWarning": {
-          "type": "boolean",
-          "default": true,
-          "description": "Warn about legacy interface."
         }
       }
     }

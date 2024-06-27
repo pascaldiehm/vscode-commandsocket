@@ -50,16 +50,14 @@ Each state update contains a `type` (see the table below). State updates are sen
 
 ## Settings
 
-| Name                                   | Description                                                  | Default  |
-| -------------------------------------- | ------------------------------------------------------------ | -------- |
-| `commandsocket.role`                   | Role of the extension (`server` or `client`)                 | `server` |
-| `commandsocket.host`                   | Bind address or remote address                               | _empty_  |
-| `commandsocket.port`                   | Bind port or remote port                                     | `6783`   |
-| `commandsocket.password`               | Password for [encryption](#encryption-details)               | _empty_  |
-| `commandsocket.timeoutReconnect`       | Client reconnection timeout (ms)                             | `5000`   |
-| `commandsocket.timeoutManualUpdate`    | Frequency of manual state update detection (ms)              | `1000`   |
-| `commandsocket.newCryptoWarning`       | Temporary setting, show warning about new encryption method  | `true`   |
-| `commandsocket.legacyInterfaceWarning` | Temporary setting, show warning about legacy interface usage | `true`   |
+| Name                                | Description                                     | Default  |
+| ----------------------------------- | ----------------------------------------------- | -------- |
+| `commandsocket.role`                | Role of the extension (`server` or `client`)    | `client` |
+| `commandsocket.host`                | Bind address or remote address                  | _empty_  |
+| `commandsocket.port`                | Bind port or remote port                        | `6783`   |
+| `commandsocket.password`            | Password for [encryption](#encryption-details)  | _empty_  |
+| `commandsocket.timeoutReconnect`    | Client reconnection timeout (ms)                | `5000`   |
+| `commandsocket.timeoutManualUpdate` | Frequency of manual state update detection (ms) | `1000`   |
 
 ## Encryption details
 

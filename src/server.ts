@@ -1,5 +1,4 @@
 import { WebSocketServer } from "ws";
-import { __legacy_handle_request } from "./__legacy_server";
 import { getState, handleRequest, parseRequest, sendInitialState, serialize } from "./common";
 import { getConfig } from "./extension";
 import { State } from "./global";
@@ -21,12 +20,6 @@ export namespace Server {
       sendInitialState(con);
 
       con.on("message", async msg => {
-        const legacyResponse = await __legacy_handle_request(msg.toString());
-        if (legacyResponse) {
-          con.send(serialize(legacyResponse as any));
-          return;
-        }
-
         const request = parseRequest(msg.toString());
         if (!request) {
           con.send(serialize({ id: null, type: "error", message: "Invalid request: " + msg.toString() }));
