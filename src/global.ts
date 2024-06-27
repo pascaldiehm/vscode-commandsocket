@@ -52,8 +52,7 @@ export type State =
     };
 
 export function encrypt(data: string, password: string): string {
-  // TODO: Enable this to pad outgoing data
-  // data = String.fromCharCode(Math.floor(Math.random() * 26) + 97) + data;
+  data = String.fromCharCode(Math.floor(Math.random() * 26) + 97) + data;
 
   const encrypted = new Array<string>(data.length);
   let li = 0;
@@ -106,6 +105,5 @@ export function decrypt(data: string, password: string): string {
     }
   }
 
-  if (decrypted[0] === "{") return decrypted.join(""); // TODO: Remove this when all communication is padded
   return decrypted.join("").substring(1, decrypted.length);
 }
